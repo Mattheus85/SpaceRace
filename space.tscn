@@ -1,0 +1,58 @@
+[gd_scene load_steps=10 format=4 uid="uid://dlx1ipd4jw4mc"]
+
+[ext_resource type="Texture2D" uid="uid://diqbhsau005qg" path="res://assets/boundary.png" id="2_81phd"]
+[ext_resource type="Texture2D" uid="uid://dvmkldk6y8b62" path="res://assets/star.png" id="2_qtpbo"]
+
+[sub_resource type="Curve" id="Curve_rxlph"]
+_data = [Vector2(0.0367647, 0), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -1.94963, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_ulv8f"]
+width = 252
+curve = SubResource("Curve_rxlph")
+
+[sub_resource type="Curve" id="Curve_d5lh8"]
+_data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(0.485294, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_81phd"]
+curve = SubResource("Curve_d5lh8")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_4fhbr"]
+emission_shape_offset = Vector3(9600, 5400, 0)
+emission_shape = 3
+emission_box_extents = Vector3(9600, 5400, 1)
+gravity = Vector3(0, 0, 0)
+scale_min = 0.1
+scale_max = 0.7
+scale_curve = SubResource("CurveTexture_81phd")
+alpha_curve = SubResource("CurveTexture_ulv8f")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qtpbo"]
+texture = ExtResource("2_81phd")
+texture_region_size = Vector2i(8, 8)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_rxlph"]
+tile_size = Vector2i(8, 8)
+sources/0 = SubResource("TileSetAtlasSource_qtpbo")
+
+[node name="NightSky" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 19200.0
+offset_bottom = 10800.0
+color = Color(0, 0, 0, 1)
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+amount = 2300
+texture = ExtResource("2_qtpbo")
+lifetime = 45.0
+preprocess = 10.0
+visibility_rect = Rect2(0, 0, 19200, 10800)
+process_material = SubResource("ParticleProcessMaterial_4fhbr")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+position = Vector2(555, 352)
+tile_map_data = PackedByteArray("AAAAAP//AAAAAAAAAAACAP//AAAAAAAAAAABAP//AAAAAAAAABADAP//AAAAAAAAABD//wAAAAAAAAAAAFD//wEAAAAAAAAAAHD//wIAAAAAAAAAAFD//wMAAAAAAAAAAHA=")
+tile_set = SubResource("TileSet_rxlph")
