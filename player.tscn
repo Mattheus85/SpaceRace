@@ -1,24 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://u3fi7dwl3dgy"]
+[gd_scene load_steps=10 format=3 uid="uid://u3fi7dwl3dgy"]
 
 [ext_resource type="Script" uid="uid://pnwimmh5jhiy" path="res://Player.cs" id="1_onrkg"]
 [ext_resource type="Texture2D" uid="uid://51jwxlalkqw" path="res://assets/spaceship_sprite_sheet.png" id="2_onrkg"]
-
-[sub_resource type="Animation" id="Animation_i3pqv"]
-resource_name = "thrust"
-length = 0.4
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3]
-}
+[ext_resource type="AudioStream" uid="uid://biylc46k1shvx" path="res://sounds/effects/mid_deep_rocket_thrust.ogg" id="3_i3pqv"]
+[ext_resource type="AudioStream" uid="uid://bd3pjdj8ufyf2" path="res://sounds/effects/electro_boundary_crash.ogg" id="4_sweqy"]
+[ext_resource type="AudioStream" uid="uid://vriuk1lteuwv" path="res://sounds/effects/small-rock-break.ogg" id="5_2hs0m"]
 
 [sub_resource type="Animation" id="Animation_hqtel"]
 length = 0.001
@@ -48,6 +34,23 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [4]
+}
+
+[sub_resource type="Animation" id="Animation_i3pqv"]
+resource_name = "thrust"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_sweqy"]
@@ -83,3 +86,13 @@ drag_vertical_enabled = true
 libraries = {
 &"": SubResource("AnimationLibrary_sweqy")
 }
+
+[node name="ThrustAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_i3pqv")
+volume_db = -5.0
+
+[node name="BoundaryAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_sweqy")
+
+[node name="RockCollisionAudio" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_2hs0m")

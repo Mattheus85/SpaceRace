@@ -10,8 +10,6 @@
 
 [node name="Player" parent="." instance=ExtResource("2_h2yge")]
 position = Vector2(798, 476)
-rotation = 2.35619
-scale = Vector2(3.17, 3.17)
 
 [node name="RigidBody2D" parent="." instance=ExtResource("3_h2yge")]
 position = Vector2(1185, 732)
