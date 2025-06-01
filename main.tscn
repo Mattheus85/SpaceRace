@@ -1,15 +1,26 @@
-[gd_scene load_steps=4 format=3 uid="uid://h533bkhdofxd"]
+[gd_scene load_steps=6 format=3 uid="uid://h533bkhdofxd"]
 
 [ext_resource type="PackedScene" uid="uid://dlx1ipd4jw4mc" path="res://space.tscn" id="1_0xm2m"]
 [ext_resource type="PackedScene" uid="uid://u3fi7dwl3dgy" path="res://player.tscn" id="2_h2yge"]
 [ext_resource type="PackedScene" uid="uid://rm5qqlpjlb6d" path="res://rock_1.tscn" id="3_h2yge"]
+[ext_resource type="PackedScene" uid="uid://17oqae3rbfc4" path="res://track_1.tscn" id="4_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://rp5qea4o6n02" path="res://boundary.tscn" id="5_lquwl"]
 
 [node name="Main" type="Node2D"]
 
 [node name="NightSky" parent="." instance=ExtResource("1_0xm2m")]
 
-[node name="Player" parent="." instance=ExtResource("2_h2yge")]
-position = Vector2(798, 476)
+[node name="Boundary" parent="." instance=ExtResource("5_lquwl")]
+
+[node name="Track_1" parent="." instance=ExtResource("4_1bvp3")]
+position = Vector2(626, 520)
 
 [node name="RigidBody2D" parent="." instance=ExtResource("3_h2yge")]
-position = Vector2(1185, 732)
+position = Vector2(934, 605)
+
+[node name="Player" parent="." instance=ExtResource("2_h2yge")]
+position = Vector2(691, 579)
+rotation = 1.61443
+acceleration = 400.0
+rotationAcceleration = 5.0
+maxSpeed = 5000.0

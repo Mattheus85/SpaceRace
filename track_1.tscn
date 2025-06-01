@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://17oqae3rbfc4"]
+
+[ext_resource type="Script" uid="uid://cu7n56bdj7b67" path="res://Track_1.cs" id="1_sdm48"]
+
+[node name="Track_1" type="StaticBody2D" node_paths=PackedStringArray("_polygon2D", "_collisionPolygon2D") groups=["Boundary"]]
+script = ExtResource("1_sdm48")
+_polygon2D = NodePath("Polygon2D")
+_collisionPolygon2D = NodePath("CollisionPolygon2D")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(1, 0.4, 0.4, 0.376471)
+polygon = PackedVector2Array(-18, -58, 326, -41, 467, -27, 496, 139, 668, 158, 846, 145, 1040, 106, 1108, 56, 1191, 0, 1352, -26, 1459, 41, 1552, 168, 1744, 187, 1910, 259, 2099, 368, 2268, 651, 2411, 954, 2674, 1454, 3518, 1404, 3483, 1672, 2548, 1641, 2068, 706, 2037, 503, 1918, 394, 1729, 319, 1461, 314, 1363, 174, 1256, 100, 1161, 150, 1081, 184, 871, 247, 671, 254, 449, 335, 322, 294, 69, 230, -27, -6)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+build_mode = 1

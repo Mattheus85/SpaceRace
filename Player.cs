@@ -6,37 +6,50 @@ public partial class Player : CharacterBody2D
 	[Export]
 	public float acceleration { get; set; } = 150.0f;
 	[Export]
-	public float rotation_acceleration { get; set; } = 2.5f;
+	public float rotationAcceleration { get; set; } = 2.5f;
 	[Export]
-	public float max_speed { get; set; } = 250.0f;
+	public float maxSpeed { get; set; } = 250.0f;
 	[Export]
-	public float mass { get; set; } = 0.1f;
+	public float playerMass { get; set; } = 10.0f;
 	[Export]
-	public float initial_rotation = 0.0f;
+	public float initialRotation = 0.0f;
 	[Export]
-	public float friction_coefficient = 10.0f;  // Adjust as needed
+	public float frictionCoefficient = 10.0f;  // Adjust as needed
 	[Export]
-	public float relative_friction_val = 0.1f;
+	public float relativeFrictionVal = 0.1f;
+
+	// Game inputs
+	private Vector2 _inputVector;
 
 	// Map boundaries
-	private static readonly Vector2 MapSize = new Vector2(19200, 10800);
-	private static readonly Vector2 MapMin = new Vector2(600, 400);
-	private static readonly Vector2 MapMax = MapSize - MapMin;
+	private static readonly Vector2 _mapSize = new Vector2(19200, 10800);
+	private static readonly Vector2 _mapMin = new Vector2(600, 400);
+	private static readonly Vector2 _mapMax = _mapSize - _mapMin;
 
 	// Energy Transfer properties
-	private static float BounceRestitution = 0.1f; // 0.0 = no bounce, 1.0 = full bounce
-	private static float RandomCaromAngle = 30.0f; // Max random angle deviation in degrees
-	private const float DegressToRadians = 0.0174533f; // standard accepted value
-	private const float EnergyTransferFactor = 0.5f; // Fraction of momentum transferred
+	private static float _bounceRestitution = 0.4f; // 0.0 = no bounce, 1.0 = full bounce
+	private const float DEGREES_TO_RADIANS = 0.0174533f; // standard accepted value
+	private const float ENERGY_TRANSFER_FACTOR = 0.4f; // Fraction of momentum transferred
 
+	// Audio delay properties
+	private double _lastCollisionTime = 0.0;
+	private const double COLLISION_COOLDOWN = 0.8;
+
+	// Player movement
+	private Vector2 movementDirection;
+
+	// Nodes
 	private Camera2D _camera;
 	private AnimationPlayer _animationPlayer;
 	private AudioStreamPlayer2D _thrustAudio;
 	private AudioStreamPlayer2D _boundaryAudio;
-	private AudioStreamPlayer2D _rockCollisionAudio;
+	private AudioStreamPlayer2D _bodyCollisionAudio;
 
-	Vector2 input_vector;
-	float push_force;
+	// Rate limits for collisions
+	private float _collisionTimer = 0.0f;
+	private int _collisionCount = 0;
+	private const float COLLISION_WINDOW = 1.0f; // 1 second
+	private const int MAX_COLLISIONS_PER_SECOND = 5; // Limit to 5 collisions per second
 
 	public override void _Ready()
 	{
@@ -44,21 +57,29 @@ public partial class Player : CharacterBody2D
 		_camera = GetNode<Camera2D>("Camera2D");
 		_thrustAudio = GetNode<AudioStreamPlayer2D>("ThrustAudio");
 		_boundaryAudio = GetNode<AudioStreamPlayer2D>("BoundaryAudio");
-		_rockCollisionAudio = GetNode<AudioStreamPlayer2D>("RockCollisionAudio");
+		_bodyCollisionAudio = GetNode<AudioStreamPlayer2D>("BodyCollisionAudio");
 	}
 
 	public override void _Process(double delta)
 	{
-		input_vector.X = Input.GetAxis("ui_left", "ui_right");
-		input_vector.Y = Input.IsActionPressed("ui_up") ? 1 : 0;
+		_inputVector.X = Input.GetAxis("ui_left", "ui_right");
+		_inputVector.Y = Input.IsActionPressed("ui_up") ? 1 : 0;
 
-		initial_rotation = input_vector.X != 0 ? (int)input_vector.X : 0;
+		initialRotation = _inputVector.X != 0 ? (int)_inputVector.X : 0;
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
-		Rotation += initial_rotation * rotation_acceleration * (float)delta;
-		if (input_vector.Y > 0)
+		// Update collision timer
+		_collisionTimer += (float)delta;
+		if (_collisionTimer >= COLLISION_WINDOW)
+		{
+			_collisionTimer -= COLLISION_WINDOW; // Reset timer
+			_collisionCount = 0; // Reset count
+		}
+
+		Rotation += initialRotation * rotationAcceleration * (float)delta;
+		if (_inputVector.Y > 0)
 		{
 			_animationPlayer.Play("thrust");
 			if (!_thrustAudio.Playing) _thrustAudio.Play();
@@ -70,157 +91,151 @@ public partial class Player : CharacterBody2D
 			_thrustAudio.Stop();
 		}
 
-		MoveAndSlide();
+		KinematicCollision2D collision = MoveAndCollide(Velocity * (float)delta);
 
-		// Handle boundary collision with bounce
-		HandleBoundaryCollision();
+		if (ShouldHandleCollision(collision))
+		{
+			if (collision.GetCollider() is Node node)
+			{
+				if (node.IsInGroup("Boundary"))
+				{
+					HandleBoundaryCollision(collision);
+				}
+				else if (node.IsInGroup("Asteroid"))
+				{
+					HandleRigidBody2DCollision(node as RigidBody2D, collision);
+				}
+				else return;
+			}
+		}
 
-		// Handle collisions with world objects
-		HandleObjectCollisions();
+		UpdateCameraPosition();
+	}
 
-		// Update camera position
+	private bool ShouldHandleCollision(KinematicCollision2D collision)
+	{
+		return collision != null && _collisionCount < MAX_COLLISIONS_PER_SECOND;
+	}
+
+	private void HandleRigidBody2DCollision(RigidBody2D body, KinematicCollision2D collision)
+	{
+		body.ApplyImpulse(Velocity, collision.GetPosition() - body.GlobalPosition);
+		ApplyImpulseToPlayer(body, collision);
+		ShakeCamera(1, 1);
+	}
+
+	private void HandleBoundaryCollision(KinematicCollision2D collision)
+	{
+		if (collision == null || !(collision.GetCollider() is Node node && node.IsInGroup("Boundary")))
+		{
+			return; // No collision or not a boundary
+		}
+
+		// Get collision details
+		Vector2 normal = collision.GetNormal(); // Points from boundary to ship
+		Vector2 remainder = collision.GetRemainder();
+
+		// Bounce velocity
+		Vector2 newVelocity = BounceVelocity(Velocity, normal, 0.5f);
+
+		// Update position to resolve collision
+		GlobalPosition += remainder;
+
+		// Apply new velocity
+		Velocity = newVelocity;
+
+		// Trigger camera shake and audio
+		ShakeCamera(15, 5);
+		if (!_boundaryAudio.Playing)
+		{
+			_boundaryAudio.Play();
+		}
+	}
+
+	private void UpdateCameraPosition()
+	{
 		_camera.GlobalPosition = GlobalPosition;
 	}
 
-	private void HandleObjectCollisions()
+	private void ApplyImpulseToPlayer(RigidBody2D body, KinematicCollision2D collision)
 	{
-		float ship_speed = Velocity.LengthSquared();
-		push_force = mass * ship_speed;
-		for (int i = 0; i < GetSlideCollisionCount(); i++)
-		{
-			KinematicCollision2D c = GetSlideCollision(i);
-			if (c.GetCollider() is RigidBody2D)
-			{
-				RigidBody2D body = c.GetCollider() as RigidBody2D;
-				ApplyImpulseToRock(body, c);
-			}
+		// Get collision details
+		Vector2 normal = collision.GetNormal(); // Points from body to character
+		Vector2 collisionPoint = collision.GetPosition();
 
-		}
-	}
+		// Get velocities
+		Vector2 characterVelocity = Velocity; // CharacterBody2D velocity
+		Vector2 bodyVelocity = body.LinearVelocity; // RigidBody2D linear velocity
 
-	private void ApplyImpulseToRock(RigidBody2D rock, KinematicCollision2D collision)
-	{
-		// Get rock's mass
-		float rockMass = rock.Mass;
-		float rockBounciness = rock.PhysicsMaterialOverride != null ? rock.PhysicsMaterialOverride.Bounce : 0.0f;
+		// Account for angular velocity of RigidBody2D
+		Vector2 r = collisionPoint - body.GlobalPosition; // Vector from body's center to collision point
+		Vector2 bodyPointVelocity = bodyVelocity + new Vector2(-body.AngularVelocity * r.Y, body.AngularVelocity * r.X);
 
-		// Save initial velocity
-		Vector2 initialVelocity = Velocity;
+		// Relative velocity at collision point
+		Vector2 relativeVelocity = characterVelocity - bodyPointVelocity;
 
-		// Calculate relative velocity
-		Vector2 relativeVelocity = Velocity - rock.LinearVelocity;
-
-		// Get collision direction of impact, from rock toward player
-		Vector2 normal = collision.GetNormal();
-
-		// Project relative velocity onto the normalized collision direction
+		// Project relative velocity onto the normal
 		float velocityAlongNormal = relativeVelocity.Dot(normal);
 
-		// Skip if objects are moving apart
+		// Skip if bodies are moving apart
 		if (velocityAlongNormal > 0)
+		{
 			return;
-
-		// Calculate restitution based on player(default 0.1) and rock(0.0) bounciness
-		float restitution = (BounceRestitution + rockBounciness) / 2.0f;
-
-		// Calculate impulse scalar using 1D collision formula
-		float impulseScalar = -(1 + restitution) * velocityAlongNormal;
-		impulseScalar /= (1 / mass + 1 / rockMass);
-		// GD.Print("relativeVelocity: ", relativeVelocity);
-		// GD.Print("velocityAlongNormal: ", velocityAlongNormal);
-		// GD.Print("impulseScalar: ", impulseScalar);
-		// GD.Print("normal: ", normal);
-
-		// Calculate impulse vector
-		Vector2 impulse = impulseScalar * normal;
-		// GD.Print("impulse: ", impulse);
-
-		// Apply friction to reduce sliding
-		Vector2 tangentialVelocity = relativeVelocity - (velocityAlongNormal * normal);
-		Vector2 frictionImpulse = -tangentialVelocity * friction_coefficient * mass;
-		// GD.Print("frictionImpulse.Length: ", frictionImpulse.Length());
-		// GD.Print("impulse.Length: ", impulse.Length());
-
-		if (frictionImpulse.Length() > impulse.Length() * relative_friction_val) {
-			frictionImpulse = frictionImpulse.Normalized() * impulse.Length();
-
-			float collisionAudioDbLevel = (relativeVelocity.Length() * (rockMass - mass) / 100);
-			float normalizedDb = Mathf.Lerp(-60.0f, 0.0f, Mathf.Clamp((collisionAudioDbLevel - 0.1f) / (15.0f - 0.1f), 0.0f, 1.0f));
-			float dbVolume = Mathf.DbToLinear(normalizedDb);
-			_rockCollisionAudio.SetVolumeLinear(dbVolume);
-			if (!_rockCollisionAudio.Playing) _rockCollisionAudio.Play();
-			GD.Print("dbVolume : ", dbVolume);
-			GD.Print("_rockCollisionAudio.GetVolumeLinear : ", _rockCollisionAudio.GetVolumeLinear() );
-
-			// Apply impulses
-			rock.ApplyImpulse(-impulse - frictionImpulse, collision.GetPosition() - rock.GlobalPosition);
-			Vector2 playerImpulse = (impulse + frictionImpulse) * EnergyTransferFactor;
-			Velocity += playerImpulse / mass;
-			Velocity = Velocity.LimitLength(max_speed); // cap at max_speed
-			
-			if (frictionImpulse.Length() < 0.01f) {
-				Velocity += normal * 5.0f; // Small nudge away from rock
-			}
-
-			// Trigger impact effects
-			TriggerImpactEffects(1, 1);
 		}
 
-		// Apply opposite impulse to player (Newton's third law)
-		// Vector2 playerImpulse = impulse / EnergyTransferFactor;
-		// Velocity += playerImpulse / mass; // Update velocity (F = ma, so v += impulse/m)
-		// Velocity = Velocity.LimitLength(max_speed); // cap at max_speed
+		// Masses
+		float bodyMass = body.Mass;
 
-		// Optional: Add random carom to player velocity
-		// float randomAngle = (float)GD.RandRange(-RandomCaromAngle, RandomCaromAngle) * DegressToRadians;
-		// Velocity = Velocity.Rotated(randomAngle);
+		// Impulse scalar
+		float impulseMagnitude = -(1.0f + _bounceRestitution) * velocityAlongNormal;
+		impulseMagnitude /= (1.0f / playerMass + 1.0f / bodyMass);
+
+		// Impulse vector
+		Vector2 impulse = impulseMagnitude * normal;
+
+		// Update CharacterBody2D velocity
+		Velocity += impulse / playerMass;
+
+		// Optional: Move to resolve collision (if not using MoveAndSlide)
+		Position += collision.GetRemainder();
+		PlayCollisionAudio(body.Mass, Velocity - body.LinearVelocity, normal);
 	}
 
-	private void HandleBoundaryCollision()
+	private bool ShouldRegisterCollision(Vector2 bodyFrictionImpulse, Vector2 shipFrictionImpulse)
 	{
-		Vector2 pos = GlobalPosition;
-		Vector2 newPos = pos;
-		Vector2 newVelocity = Velocity;
-		bool hitBoundary = false;
+		return (bodyFrictionImpulse.Length() > shipFrictionImpulse.Length() * relativeFrictionVal);
+	}
 
-		// Check each boundary and apply bounce
-		if (pos.X <= MapMin.X)
+	private void PlayCollisionAudio(float bodyMass, Vector2 relativeVelocity, Vector2 normal)
+	{
+		double currentTime = Time.GetUnixTimeFromSystem();
+		if (currentTime - _lastCollisionTime < COLLISION_COOLDOWN)
 		{
-			newPos.X = MapMin.X;
-			newVelocity = BounceVelocity(newVelocity, new Vector2(1, 0)); // Normal vector: right
-			hitBoundary = true;
+			return; // Skip this collision audio
 		}
-		else if (pos.X >= MapMax.X)
-		{
-			newPos.X = MapMax.X;
-			newVelocity = BounceVelocity(newVelocity, new Vector2(-1, 0)); // Normal vector: left
-			hitBoundary = true;
-		}
+		_lastCollisionTime = currentTime;
 
-		if (pos.Y <= MapMin.Y)
-		{
-			newPos.Y = MapMin.Y;
-			newVelocity = BounceVelocity(newVelocity, new Vector2(0, 1)); // Normal vector: down
-			hitBoundary = true;
-		}
-		else if (pos.Y >= MapMax.Y)
-		{
-			newPos.Y = MapMax.Y;
-			newVelocity = BounceVelocity(newVelocity, new Vector2(0, -1)); // Normal vector: up
-			hitBoundary = true;
-		}
+		// Use velocity along the normal for impact force
+		float velocityAlongNormal = relativeVelocity.Dot(normal);
+		float impactForce = Mathf.Abs(velocityAlongNormal) * MathF.Log10(bodyMass);
 
-		// Apply new position and velocity if changed
-		if (newPos != pos)
+		// Define energy ranges (adjust based on your game)
+		float minImpactForce = 0.0f;
+		float maxImpactForc = 700.0f;
+
+		float normalizedEnergy = Mathf.Clamp((impactForce - minImpactForce) / (maxImpactForc - minImpactForce), 0.0f, 1.0f);
+		float dbValue = Mathf.Lerp(-20.0f, 0.0f, normalizedEnergy);
+
+		if (_bodyCollisionAudio.Playing)
 		{
-			GlobalPosition = newPos;
-			Velocity = newVelocity;
-			if (hitBoundary)
-			{
-				TriggerImpactEffects(15, 5);
-				if (!_boundaryAudio.Playing) _boundaryAudio.Play();
-			}
+			_bodyCollisionAudio.Stop();
 		}
+		_bodyCollisionAudio.VolumeDb = dbValue;
+		_bodyCollisionAudio.Play();
+		GD.Print("body mass : ", bodyMass);
+		GD.Print("impactForce: ", impactForce);
+		GD.Print("normalizedEnergy: ", normalizedEnergy);
+		GD.Print("dbValue : ", dbValue);
 	}
 
 	private Vector2 BounceVelocity(Vector2 velocity, Vector2 normal)
@@ -229,14 +244,23 @@ public partial class Player : CharacterBody2D
 		Vector2 reflected = velocity - 2 * velocity.Dot(normal) * normal;
 
 		// Apply restitution (energy conservation)
-		reflected *= BounceRestitution;
+		reflected *= _bounceRestitution;
 
-		// Add random carom effect by rotating the reflected velocity
-		float randomAngle = (float)GD.RandRange(-RandomCaromAngle, RandomCaromAngle) * DegressToRadians;
-		return reflected.Rotated(randomAngle);
+		return reflected;
 	}
 
-	private void TriggerImpactEffects(int duration, int offset)
+	private Vector2 BounceVelocity(Vector2 velocity, Vector2 normal, float additionalBounce)
+	{
+		// Reflect velocity: v' = v - 2 * (v · n) * n
+		Vector2 reflected = velocity - 2 * velocity.Dot(normal) * normal;
+
+		// Apply restitution (energy conservation)
+		reflected *= _bounceRestitution + additionalBounce;
+
+		return reflected;
+	}
+
+	private void ShakeCamera(int duration, int offset)
 	{
 		// Screen shake
 		var tween = CreateTween();
@@ -258,6 +282,6 @@ public partial class Player : CharacterBody2D
 		// Accelerate in the facing direction (Rotation = 0 is up)
 		Vector2 thrustDirection = new Vector2(0, -1).Rotated(Rotation); // Upward vector rotated by ship's angle
 		Velocity += thrustDirection * acceleration * (float)delta; // Add acceleration
-		Velocity = Velocity.LimitLength(max_speed); // Cap at max_speed
+		Velocity = Velocity.LimitLength(maxSpeed); // Cap at max_speed
 	}
 }

@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://rp5qea4o6n02"]
+
+[node name="Boundary" type="StaticBody2D" groups=["Boundary"]]
+
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="."]
+build_mode = 1
+polygon = PackedVector2Array(550, 350, 18650, 350, 18650, 10450, 550, 10450)
+
+[node name="Line2D" type="Line2D" parent="."]
+points = PackedVector2Array(545, 345, 18655, 345, 18655, 10455, 545, 10455)
+closed = true
+default_color = Color(0.961708, 0.364058, 0.131964, 1)
+joint_mode = 2

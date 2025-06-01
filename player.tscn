@@ -66,8 +66,8 @@ floor_stop_on_slope = false
 floor_constant_speed = true
 floor_block_on_wall = false
 script = ExtResource("1_onrkg")
-acceleration = 200.0
-max_speed = 300.0
+acceleration = 300.0
+rotationAcceleration = 4.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_onrkg")
@@ -94,5 +94,5 @@ volume_db = -5.0
 [node name="BoundaryAudio" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_sweqy")
 
-[node name="RockCollisionAudio" type="AudioStreamPlayer2D" parent="."]
+[node name="BodyCollisionAudio" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("5_2hs0m")
