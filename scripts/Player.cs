@@ -33,7 +33,7 @@ public partial class Player : CharacterBody2D
 
 	// Audio delay properties
 	private double _lastCollisionTime = 0.0;
-	private const double COLLISION_COOLDOWN = 0.8;
+	private const double COLLISION_COOLDOWN = 0.5;
 
 	// Player movement
 	private Vector2 movementDirection;
@@ -45,11 +45,11 @@ public partial class Player : CharacterBody2D
 	private AudioStreamPlayer2D _boundaryAudio;
 	private AudioStreamPlayer2D _bodyCollisionAudio;
 
-	// Rate limits for collisions
+	// Rate limits for physical collisions
 	private float _collisionTimer = 0.0f;
 	private int _collisionCount = 0;
 	private const float COLLISION_WINDOW = 1.0f; // 1 second
-	private const int MAX_COLLISIONS_PER_SECOND = 5; // Limit to 5 collisions per second
+	private const int MAX_COLLISIONS_PER_SECOND = 10; // Limit to 10 collisions per second
 
 	public override void _Ready()
 	{
@@ -74,8 +74,8 @@ public partial class Player : CharacterBody2D
 		_collisionTimer += (float)delta;
 		if (_collisionTimer >= COLLISION_WINDOW)
 		{
-			_collisionTimer -= COLLISION_WINDOW; // Reset timer
-			_collisionCount = 0; // Reset count
+			_collisionTimer -= COLLISION_WINDOW;
+			_collisionCount = 0;
 		}
 
 		Rotation += _initialRotation * rotationAcceleration * (float)delta;
@@ -95,6 +95,7 @@ public partial class Player : CharacterBody2D
 
 		if (ShouldHandleCollision(collision))
 		{
+			_collisionCount++;
 			if (collision.GetCollider() is Node node)
 			{
 				if (node.IsInGroup("Boundary"))
@@ -184,7 +185,7 @@ public partial class Player : CharacterBody2D
 			return;
 		}
 
-		GD.Print("Mass of just collided with asteroid: ", body.Mass);
+		// GD.Print("Mass just collided with asteroid: ", body.Mass);
 		// Masses
 		float bodyMass = body.Mass;
 

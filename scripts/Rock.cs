@@ -36,6 +36,7 @@ public partial class Rock : RigidBody2D
 		);
 
 		// Randomize size
+		// if rock is > 1.2x larger than spaceship, then use modulo spaceship.size
 		float size_calc = (float)GD.RandRange(_minSize.X, _maxSize.X);
 		Vector2 size = new Vector2( size_calc, size_calc);
 

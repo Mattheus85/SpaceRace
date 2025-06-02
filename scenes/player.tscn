@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://u3fi7dwl3dgy"]
 
-[ext_resource type="Script" uid="uid://pnwimmh5jhiy" path="res://Player.cs" id="1_onrkg"]
+[ext_resource type="Script" uid="uid://pnwimmh5jhiy" path="res://scripts/Player.cs" id="1_onrkg"]
 [ext_resource type="Texture2D" uid="uid://51jwxlalkqw" path="res://assets/spaceship_sprite_sheet.png" id="2_onrkg"]
 [ext_resource type="AudioStream" uid="uid://biylc46k1shvx" path="res://sounds/effects/mid_deep_rocket_thrust.ogg" id="3_i3pqv"]
 [ext_resource type="AudioStream" uid="uid://bd3pjdj8ufyf2" path="res://sounds/effects/electro_boundary_crash.ogg" id="4_sweqy"]

@@ -1,13 +1,13 @@
 [gd_scene load_steps=5 format=3 uid="uid://h533bkhdofxd"]
 
-[ext_resource type="PackedScene" uid="uid://dlx1ipd4jw4mc" path="res://space.tscn" id="1_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://dlx1ipd4jw4mc" path="res://scenes/space.tscn" id="1_0xm2m"]
 [ext_resource type="Script" uid="uid://3626cfh4ua3h" path="res://Main.cs" id="1_lquwl"]
-[ext_resource type="PackedScene" uid="uid://u3fi7dwl3dgy" path="res://player.tscn" id="2_h2yge"]
-[ext_resource type="PackedScene" uid="uid://rp5qea4o6n02" path="res://boundary.tscn" id="5_lquwl"]
+[ext_resource type="PackedScene" uid="uid://u3fi7dwl3dgy" path="res://scenes/player.tscn" id="2_h2yge"]
+[ext_resource type="PackedScene" uid="uid://rp5qea4o6n02" path="res://scenes/boundary.tscn" id="5_lquwl"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_lquwl")
-_objectsPerType = 300
+_objectsPerType = 250
 _boundaryPath = NodePath("Boundary")
 
 [node name="NightSky" parent="." instance=ExtResource("1_0xm2m")]

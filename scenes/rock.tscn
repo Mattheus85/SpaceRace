@@ -482,7 +482,6 @@ gravity_scale = 0.0
 linear_damp_mode = 1
 angular_damp_mode = 1
 script = ExtResource("1_1di36")
-_maxSize = Vector2(128, 128)
 
 [node name="CollisionPolygon" type="CollisionPolygon2D" parent="."]
 polygon = PackedVector2Array(-27, -38, -14, -41, 3, -41, 25, -33, 37, -18, 40, 5, 40, 22, 32, 32, 18, 39, 3, 37, -6, 37, -15, 38, -21, 28, -38, 14, -45, -7)

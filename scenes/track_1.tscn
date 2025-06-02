@@ -1,12 +1,10 @@
 [gd_scene load_steps=2 format=3 uid="uid://17oqae3rbfc4"]
 
-[ext_resource type="Script" uid="uid://cu7n56bdj7b67" path="res://Track_1.cs" id="1_sdm48"]
+[ext_resource type="Script" uid="uid://cu7n56bdj7b67" path="res://scripts/Track_1.cs" id="1_sdm48"]
 
-[node name="Track_1" type="StaticBody2D" node_paths=PackedStringArray("_polygon2D", "_collisionPolygon2D") groups=["Boundary"]]
+[node name="Track_1" type="StaticBody2D" groups=["Boundary"]]
 collision_priority = 100.0
 script = ExtResource("1_sdm48")
-_polygon2D = NodePath("Polygon2D")
-_collisionPolygon2D = NodePath("CollisionPolygon2D")
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 color = Color(1, 1, 1, 0)
