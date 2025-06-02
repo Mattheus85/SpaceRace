@@ -136,18 +136,19 @@ public partial class Player : CharacterBody2D
 		Vector2 remainder = collision.GetRemainder();
 
 		// Bounce velocity
-		Vector2 newVelocity = BounceVelocity(Velocity, normal, 0.5f);
+		Vector2 newVelocity = BounceVelocity(Velocity, normal, 0.0f);
 
 		// Update position to resolve collision
-		GlobalPosition += remainder;
+		// GlobalPosition += remainder;
 
 		// Apply new velocity
 		Velocity = newVelocity;
 
 		// Trigger camera shake and audio
-		ShakeCamera(15, 5);
+		ShakeCamera(1, 1);
 		if (!_boundaryAudio.Playing)
 		{
+			_boundaryAudio.VolumeDb = -18.0f;
 			_boundaryAudio.Play();
 		}
 	}
