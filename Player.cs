@@ -10,13 +10,13 @@ public partial class Player : CharacterBody2D
 	[Export]
 	public float maxSpeed { get; set; } = 250.0f;
 	[Export]
-	public float playerMass { get; set; } = 10.0f;
+	public float playerMass { get; set; } = 24_000.0f;
 	[Export]
-	public float initialRotation = 0.0f;
+	private float _initialRotation = 0.0f;
 	[Export]
-	public float frictionCoefficient = 10.0f;  // Adjust as needed
+	private float _frictionCoefficient = 10.0f;  // Adjust as needed
 	[Export]
-	public float relativeFrictionVal = 0.1f;
+	private float _relativeFrictionVal = 0.1f;
 
 	// Game inputs
 	private Vector2 _inputVector;
@@ -65,7 +65,7 @@ public partial class Player : CharacterBody2D
 		_inputVector.X = Input.GetAxis("ui_left", "ui_right");
 		_inputVector.Y = Input.IsActionPressed("ui_up") ? 1 : 0;
 
-		initialRotation = _inputVector.X != 0 ? (int)_inputVector.X : 0;
+		_initialRotation = _inputVector.X != 0 ? (int)_inputVector.X : 0;
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -78,7 +78,7 @@ public partial class Player : CharacterBody2D
 			_collisionCount = 0; // Reset count
 		}
 
-		Rotation += initialRotation * rotationAcceleration * (float)delta;
+		Rotation += _initialRotation * rotationAcceleration * (float)delta;
 		if (_inputVector.Y > 0)
 		{
 			_animationPlayer.Play("thrust");
@@ -119,7 +119,7 @@ public partial class Player : CharacterBody2D
 
 	private void HandleRigidBody2DCollision(RigidBody2D body, KinematicCollision2D collision)
 	{
-		body.ApplyImpulse(Velocity, collision.GetPosition() - body.GlobalPosition);
+		body.ApplyImpulse(Velocity * 5, collision.GetPosition() - body.GlobalPosition);
 		ApplyImpulseToPlayer(body, collision);
 		ShakeCamera(1, 1);
 	}
@@ -184,6 +184,7 @@ public partial class Player : CharacterBody2D
 			return;
 		}
 
+		GD.Print("Mass of just collided with asteroid: ", body.Mass);
 		// Masses
 		float bodyMass = body.Mass;
 
@@ -204,7 +205,7 @@ public partial class Player : CharacterBody2D
 
 	private bool ShouldRegisterCollision(Vector2 bodyFrictionImpulse, Vector2 shipFrictionImpulse)
 	{
-		return (bodyFrictionImpulse.Length() > shipFrictionImpulse.Length() * relativeFrictionVal);
+		return (bodyFrictionImpulse.Length() > shipFrictionImpulse.Length() * _relativeFrictionVal);
 	}
 
 	private void PlayCollisionAudio(float bodyMass, Vector2 relativeVelocity, Vector2 normal)
@@ -222,10 +223,10 @@ public partial class Player : CharacterBody2D
 
 		// Define energy ranges (adjust based on your game)
 		float minImpactForce = 0.0f;
-		float maxImpactForc = 700.0f;
+		float maxImpactForc = 1200.0f;
 
 		float normalizedEnergy = Mathf.Clamp((impactForce - minImpactForce) / (maxImpactForc - minImpactForce), 0.0f, 1.0f);
-		float dbValue = Mathf.Lerp(-20.0f, 0.0f, normalizedEnergy);
+		float dbValue = Mathf.Lerp(-28.0f, 0.0f, normalizedEnergy);
 
 		if (_bodyCollisionAudio.Playing)
 		{
@@ -233,10 +234,10 @@ public partial class Player : CharacterBody2D
 		}
 		_bodyCollisionAudio.VolumeDb = dbValue;
 		_bodyCollisionAudio.Play();
-		GD.Print("body mass : ", bodyMass);
-		GD.Print("impactForce: ", impactForce);
-		GD.Print("normalizedEnergy: ", normalizedEnergy);
-		GD.Print("dbValue : ", dbValue);
+		// GD.Print("body mass : ", bodyMass);
+		// GD.Print("impactForce: ", impactForce);
+		// GD.Print("normalizedEnergy: ", normalizedEnergy);
+		// GD.Print("dbValue : ", dbValue);
 	}
 
 	private Vector2 BounceVelocity(Vector2 velocity, Vector2 normal)

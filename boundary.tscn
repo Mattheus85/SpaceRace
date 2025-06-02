@@ -1,8 +1,9 @@
 [gd_scene format=3 uid="uid://rp5qea4o6n02"]
 
 [node name="Boundary" type="StaticBody2D" groups=["Boundary"]]
+collision_priority = 100.0
 
-[node name="CollisionShape2D" type="CollisionPolygon2D" parent="."]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 build_mode = 1
 polygon = PackedVector2Array(550, 350, 18650, 350, 18650, 10450, 550, 10450)
 

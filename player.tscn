@@ -68,6 +68,7 @@ floor_block_on_wall = false
 script = ExtResource("1_onrkg")
 acceleration = 300.0
 rotationAcceleration = 4.0
+playerMass = 100000.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(1.5, 1.5)
