@@ -91,6 +91,17 @@ public partial class Player : CharacterBody2D
 			_thrustAudio.Stop();
 		}
 
+		MoveAndSlide();
+
+		for (int i = 0; i < GetSlideCollisionCount(); i++)
+		{
+			var c = GetSlideCollision(i);
+			var collider = c.GetCollider();
+			if (collider is RigidBody2D) {
+				HandleRigidBody2DCollision(collider as RigidBody2D, c);
+			}
+		}
+
 		KinematicCollision2D collision = MoveAndCollide(Velocity * (float)delta);
 
 		if (ShouldHandleCollision(collision))

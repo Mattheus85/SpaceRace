@@ -1,14 +1,64 @@
-[gd_scene format=3 uid="uid://rp5qea4o6n02"]
+[gd_scene load_steps=9 format=3 uid="uid://rp5qea4o6n02"]
+
+[ext_resource type="Script" uid="uid://dreitt5ayeufk" path="res://scenes/Boundary.cs" id="1_6flaw"]
+[ext_resource type="Texture2D" uid="uid://d16ahxq3y4av6" path="res://assets/starmaps/starmap_2020_4k_gal.exr" id="2_ymxvx"]
+[ext_resource type="Texture2D" uid="uid://gvdg8vlaqfm5" path="res://assets/starmaps/constellation_figures_4k_gal.png" id="3_7iu4k"]
+[ext_resource type="Script" uid="uid://b5haj3ywjrf8y" path="res://scripts/ParallaxBG.cs" id="3_lpm6v"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_qfxeu"]
+b = Vector2(38400, 0)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_6flaw"]
+a = Vector2(38400, 0)
+b = Vector2(38400, 21600)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_ymxvx"]
+a = Vector2(0, 21600)
+b = Vector2(38400, 21600)
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_tcmyj"]
+b = Vector2(0, 21600)
 
 [node name="Boundary" type="StaticBody2D" groups=["Boundary"]]
-collision_priority = 100.0
+script = ExtResource("1_6flaw")
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-build_mode = 1
-polygon = PackedVector2Array(550, 350, 18650, 350, 18650, 10450, 550, 10450)
+[node name="Top" type="CollisionShape2D" parent="."]
+shape = SubResource("SegmentShape2D_qfxeu")
+debug_color = Color(1, 0, 0, 1)
 
-[node name="Line2D" type="Line2D" parent="."]
-points = PackedVector2Array(545, 345, 18655, 345, 18655, 10455, 545, 10455)
-closed = true
-default_color = Color(0.961708, 0.364058, 0.131964, 1)
-joint_mode = 2
+[node name="Right" type="CollisionShape2D" parent="."]
+shape = SubResource("SegmentShape2D_6flaw")
+debug_color = Color(1, 0, 0, 1)
+
+[node name="Bottom" type="CollisionShape2D" parent="."]
+shape = SubResource("SegmentShape2D_ymxvx")
+debug_color = Color(1, 0, 0, 1)
+
+[node name="Left" type="CollisionShape2D" parent="."]
+shape = SubResource("SegmentShape2D_tcmyj")
+debug_color = Color(1, 0, 0, 1)
+
+[node name="CL" type="CanvasLayer" parent="."]
+layer = -100
+
+[node name="Starfield" type="TextureRect" parent="CL"]
+offset_left = -250.0
+offset_top = -75.0
+offset_right = 3846.0
+offset_bottom = 1973.0
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2_ymxvx")
+expand_mode = 1
+
+[node name="TextureRect" type="TextureRect" parent="CL"]
+modulate = Color(1, 1, 1, 0.12549)
+offset_left = -250.0
+offset_top = -75.0
+offset_right = 3845.0
+offset_bottom = 1973.0
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("3_7iu4k")
+expand_mode = 1
+
+[node name="ParallaxBG" type="ParallaxBackground" parent="."]
+script = ExtResource("3_lpm6v")

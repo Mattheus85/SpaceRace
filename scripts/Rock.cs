@@ -29,7 +29,7 @@ public partial class Rock : RigidBody2D
 		_animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite");
 		_collisionPolygon = GetNode<CollisionPolygon2D>("CollisionPolygon");
 
-	   // Randomize position within playable area
+		// Randomize position within playable area
 		Position = new Vector2(
 			(float)GD.RandRange(_playableAreaMin.X + _spawnMargin, _playableAreaMax.X - _spawnMargin),
 			(float)GD.RandRange(_playableAreaMin.Y + _spawnMargin, _playableAreaMax.Y - _spawnMargin)
@@ -38,7 +38,7 @@ public partial class Rock : RigidBody2D
 		// Randomize size
 		// if rock is > 1.2x larger than spaceship, then use modulo spaceship.size
 		float size_calc = (float)GD.RandRange(_minSize.X, _maxSize.X);
-		Vector2 size = new Vector2( size_calc, size_calc);
+		Vector2 size = new Vector2(size_calc, size_calc);
 
 		// Calculate mass based on density(0.8-1.2) and area
 		float density = (float)GD.RandRange(_minBaseDensity, _maxBaseDensity);

@@ -1,10 +1,13 @@
-[gd_scene load_steps=10 format=3 uid="uid://u3fi7dwl3dgy"]
+[gd_scene load_steps=11 format=3 uid="uid://u3fi7dwl3dgy"]
 
 [ext_resource type="Script" uid="uid://pnwimmh5jhiy" path="res://scripts/Player.cs" id="1_onrkg"]
 [ext_resource type="Texture2D" uid="uid://51jwxlalkqw" path="res://assets/spaceship_sprite_sheet.png" id="2_onrkg"]
 [ext_resource type="AudioStream" uid="uid://biylc46k1shvx" path="res://sounds/effects/mid_deep_rocket_thrust.ogg" id="3_i3pqv"]
 [ext_resource type="AudioStream" uid="uid://bd3pjdj8ufyf2" path="res://sounds/effects/electro_boundary_crash.ogg" id="4_sweqy"]
 [ext_resource type="AudioStream" uid="uid://vriuk1lteuwv" path="res://sounds/effects/small-rock-break.ogg" id="5_2hs0m"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qlg0r"]
+height = 36.0
 
 [sub_resource type="Animation" id="Animation_hqtel"]
 length = 0.001
@@ -68,21 +71,31 @@ floor_block_on_wall = false
 script = ExtResource("1_onrkg")
 acceleration = 300.0
 rotationAcceleration = 4.0
+maxSpeed = 5000.0
 playerMass = 100000.0
 
-[node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(1.5, 1.5)
-drag_horizontal_enabled = true
-drag_vertical_enabled = true
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(0.341951, 0.862649)
+shape = SubResource("CapsuleShape2D_qlg0r")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(7, 7)
+rotation = 0.872665
+scale = Vector2(0.227788, 0.464866)
+shape = SubResource("CapsuleShape2D_qlg0r")
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="."]
+position = Vector2(-7, 7)
+rotation = 2.26893
+scale = Vector2(0.227788, 0.464866)
+shape = SubResource("CapsuleShape2D_qlg0r")
+metadata/_edit_lock_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_onrkg")
-offset = Vector2(0, -4)
 hframes = 5
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-position = Vector2(0, -4)
-polygon = PackedVector2Array(-1, -16, 1, -16, 3, -9, 4, 5, 11, 1, 14, 1, 12, 4, 2, 14, -2, 14, -13, 4, -14, 1, -11, 1, -4, 5, -4, -9)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

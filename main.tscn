@@ -1,21 +1,20 @@
-[gd_scene load_steps=5 format=3 uid="uid://h533bkhdofxd"]
+[gd_scene load_steps=4 format=3 uid="uid://h533bkhdofxd"]
 
-[ext_resource type="PackedScene" uid="uid://dlx1ipd4jw4mc" path="res://scenes/space.tscn" id="1_0xm2m"]
 [ext_resource type="Script" uid="uid://3626cfh4ua3h" path="res://Main.cs" id="1_lquwl"]
 [ext_resource type="PackedScene" uid="uid://u3fi7dwl3dgy" path="res://scenes/player.tscn" id="2_h2yge"]
 [ext_resource type="PackedScene" uid="uid://rp5qea4o6n02" path="res://scenes/boundary.tscn" id="5_lquwl"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_lquwl")
-_objectsPerType = 250
+_objectsPerType = 0
 _boundaryPath = NodePath("Boundary")
-
-[node name="NightSky" parent="." instance=ExtResource("1_0xm2m")]
 
 [node name="Boundary" parent="." instance=ExtResource("5_lquwl")]
 
 [node name="Player" parent="." instance=ExtResource("2_h2yge")]
-position = Vector2(15451, 3849)
-rotation = 1.61443
-acceleration = 1000.0
-maxSpeed = 5000.0
+position = Vector2(79, 48)
+acceleration = 75.0
+maxSpeed = 150.0
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+zoom = Vector2(2, 2)
