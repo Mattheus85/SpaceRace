@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://wawqh5kud5jl"
+path="res://.godot/imported/MicroRecon.obj-69d06d4afb781d340896d93459bbddbf.mesh"
+
+[deps]
+
+files=["res://.godot/imported/MicroRecon.obj-69d06d4afb781d340896d93459bbddbf.mesh"]
+
+source_file="res://assets/ships/Package_4/MicroRecon.obj"
+dest_files=["res://.godot/imported/MicroRecon.obj-69d06d4afb781d340896d93459bbddbf.mesh", "res://.godot/imported/MicroRecon.obj-69d06d4afb781d340896d93459bbddbf.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

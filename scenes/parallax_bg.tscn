@@ -6,15 +6,16 @@
 
 [sub_resource type="Resource" id="Resource_opv8y"]
 script = ExtResource("2_w8ny7")
-TypeKey = "Asteroids"
+TypeKey = "Asteroid"
 Prefab = ExtResource("2_kk7ld")
-MaxCount = 25
-IsOrdered = false
-MinSize = 0.1
+MaxCount = 3900
+IsOrdered = true
+MinSize = 0.02
 MaxSize = 0.9
-ParallaxSpeed = 45
+ParallaxSpeed = 20.0
 metadata/_custom_type_script = "uid://dsd74emadrro5"
 
-[node name="ParallaxBG" type="CanvasLayer"]
+[node name="ParallaxBG" type="ParallaxBackground"]
+layer = -99
 script = ExtResource("1_4quh1")
 _itemConfigs = [SubResource("Resource_opv8y")]

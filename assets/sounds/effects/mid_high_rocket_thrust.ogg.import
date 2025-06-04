@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://cjsg6p6yri2bg"
-path="res://.godot/imported/mid_high_rocket_thrust.ogg-1ef5c4ab76bc329fd919bc40d70826fd.oggvorbisstr"
+path="res://.godot/imported/mid_high_rocket_thrust.ogg-47337f6b345d94ee20dc6a737c81638f.oggvorbisstr"
 
 [deps]
 
-source_file="res://sounds/effects/mid_high_rocket_thrust.ogg"
-dest_files=["res://.godot/imported/mid_high_rocket_thrust.ogg-1ef5c4ab76bc329fd919bc40d70826fd.oggvorbisstr"]
+source_file="res://assets/sounds/effects/mid_high_rocket_thrust.ogg"
+dest_files=["res://.godot/imported/mid_high_rocket_thrust.ogg-47337f6b345d94ee20dc6a737c81638f.oggvorbisstr"]
 
 [params]
 

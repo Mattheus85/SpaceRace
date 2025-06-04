@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://vriuk1lteuwv"
-path="res://.godot/imported/small-rock-break.ogg-01ca12a1d14034a4c048447badcb6380.oggvorbisstr"
+path="res://.godot/imported/small-rock-break.ogg-988ee7979d133631043791463aa04f2f.oggvorbisstr"
 
 [deps]
 
-source_file="res://sounds/effects/small-rock-break.ogg"
-dest_files=["res://.godot/imported/small-rock-break.ogg-01ca12a1d14034a4c048447badcb6380.oggvorbisstr"]
+source_file="res://assets/sounds/effects/small-rock-break.ogg"
+dest_files=["res://.godot/imported/small-rock-break.ogg-988ee7979d133631043791463aa04f2f.oggvorbisstr"]
 
 [params]
 

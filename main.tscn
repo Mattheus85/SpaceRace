@@ -9,26 +9,21 @@
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_lquwl")
-_objectsPerType = 0
-_scenePaths = PackedStringArray()
-_boundaryPath = NodePath("Boundary")
 
 [node name="Boundary" parent="." instance=ExtResource("5_lquwl")]
 
+[node name="SpaceBackground" parent="." instance=ExtResource("3_1bvp3")]
+
 [node name="Player" parent="." instance=ExtResource("2_h2yge")]
 position = Vector2(965, 541)
-acceleration = 500.0
-rotationAcceleration = 3.0
+acceleration = 30.0
+maxSpeed = 10.0
 metadata/_edit_group_ = true
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
-drag_horizontal_enabled = true
-drag_vertical_enabled = true
 
-[node name="SpaceBackground" parent="." instance=ExtResource("3_1bvp3")]
-
-[node name="ParallaxBG" parent="." instance=ExtResource("5_7mycd")]
-layer = -100
+[node name="ParallaxBG" parent="Player/Camera2D" instance=ExtResource("5_7mycd")]
 follow_viewport_enabled = true
+scroll_ignore_camera_zoom = true
 
 [node name="Debug" parent="." instance=ExtResource("6_7mycd")]
