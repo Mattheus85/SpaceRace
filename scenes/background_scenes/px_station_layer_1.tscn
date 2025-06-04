@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://boe24wqrs346j"]
+
+[ext_resource type="Texture2D" uid="uid://cdwgj3d8fltc7" path="res://assets/stations/spacestation.png" id="1_2sasq"]
+
+[node name="PxStationLayer_1" type="ParallaxLayer"]
+modulate = Color(0.925353, 0.925353, 0.925353, 1)
+z_index = -1
+
+[node name="PxStationTexture_1" type="TextureRect" parent="."]
+offset_right = 1600.0
+offset_bottom = 319.0
+texture = ExtResource("1_2sasq")
+expand_mode = 4

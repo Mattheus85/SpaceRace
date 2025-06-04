@@ -4,7 +4,7 @@ using Godot;
 public partial class BackgroundItemConfig : Resource
 {
 	[Export] public string TypeKey { get; set; } = "Unnamed";
-	[Export] public PackedScene Prefab { get; set; }
+	[Export] public PackedScene ProvidedPackedScene { get; set; }
 	[Export] public int MaxCount { get; set; } = 25;
 	[Export] public bool IsOrdered { get; set; } = true;
 	[Export] public float MinSize { get; set; } = 0.1f;

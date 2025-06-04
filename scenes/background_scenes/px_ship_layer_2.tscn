@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://mkfpaure0u2k"]
+
+[ext_resource type="Texture2D" uid="uid://cvyrbsehls7jy" path="res://assets/ships/Faction9-Spaceships-by-MillionthVector/bluecargoship.png" id="1_p002a"]
+
+[node name="PxShipLayer_2" type="ParallaxLayer"]
+
+[node name="PxShipTexture_2" type="TextureRect" parent="."]
+offset_right = 64.0
+offset_bottom = 64.0
+texture = ExtResource("1_p002a")
+expand_mode = 1

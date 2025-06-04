@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://d4a4vw4sobbh4"]
+
+[ext_resource type="Texture2D" uid="uid://khvamntl4ljr" path="res://assets/planets/planet-generic09-000.export.png" id="1_orw5j"]
+
+[node name="PxPlanetLayer_1" type="ParallaxLayer"]
+
+[node name="PxPlanetTexture_1" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.588235)
+offset_right = 32.0
+offset_bottom = 32.0
+texture = ExtResource("1_orw5j")
+expand_mode = 1

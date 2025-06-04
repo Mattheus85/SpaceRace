@@ -1,21 +1,81 @@
-[gd_scene load_steps=5 format=3 uid="uid://ccdi1rndw4tmm"]
+[gd_scene load_steps=15 format=3 uid="uid://ccdi1rndw4tmm"]
 
 [ext_resource type="Script" uid="uid://b5haj3ywjrf8y" path="res://scripts/ParallaxBG.cs" id="1_4quh1"]
-[ext_resource type="PackedScene" uid="uid://djwjqm6w6q84i" path="res://scenes/asteroid.tscn" id="2_kk7ld"]
+[ext_resource type="PackedScene" uid="uid://djwjqm6w6q84i" path="res://scenes/background_scenes/px_asteroid_layer_1.tscn" id="2_4j2lk"]
 [ext_resource type="Script" uid="uid://dsd74emadrro5" path="res://scripts/BackgroundItemConfig.cs" id="2_w8ny7"]
+[ext_resource type="PackedScene" uid="uid://cfh7b6suhaak8" path="res://scenes/background_scenes/px_ship_layer_1.tscn" id="4_opv8y"]
+[ext_resource type="PackedScene" uid="uid://d4a4vw4sobbh4" path="res://scenes/background_scenes/px_planet_layer_1.tscn" id="5_llcxi"]
+[ext_resource type="PackedScene" uid="uid://cgeeovwqgib80" path="res://scenes/background_scenes/px_star_layer_1.tscn" id="6_4j2lk"]
+[ext_resource type="PackedScene" uid="uid://mkfpaure0u2k" path="res://scenes/background_scenes/px_ship_layer_2.tscn" id="7_bh54y"]
+[ext_resource type="PackedScene" uid="uid://boe24wqrs346j" path="res://scenes/background_scenes/px_station_layer_1.tscn" id="8_48ck1"]
 
 [sub_resource type="Resource" id="Resource_opv8y"]
 script = ExtResource("2_w8ny7")
-TypeKey = "Asteroid"
-Prefab = ExtResource("2_kk7ld")
-MaxCount = 3900
+TypeKey = "PxAsteroid_1"
+ProvidedPackedScene = ExtResource("2_4j2lk")
+MaxCount = 111
 IsOrdered = true
 MinSize = 0.02
 MaxSize = 0.9
 ParallaxSpeed = 20.0
 metadata/_custom_type_script = "uid://dsd74emadrro5"
 
+[sub_resource type="Resource" id="Resource_llcxi"]
+script = ExtResource("2_w8ny7")
+TypeKey = "PxShip_1"
+ProvidedPackedScene = ExtResource("4_opv8y")
+MaxCount = 111
+IsOrdered = true
+MinSize = 0.1
+MaxSize = 0.9
+ParallaxSpeed = 30.0
+metadata/_custom_type_script = "uid://dsd74emadrro5"
+
+[sub_resource type="Resource" id="Resource_4j2lk"]
+script = ExtResource("2_w8ny7")
+TypeKey = "PxPlanet_1"
+ProvidedPackedScene = ExtResource("5_llcxi")
+MaxCount = 111
+IsOrdered = false
+MinSize = 0.4
+MaxSize = 0.4
+ParallaxSpeed = 0.02
+metadata/_custom_type_script = "uid://dsd74emadrro5"
+
+[sub_resource type="Resource" id="Resource_bh54y"]
+script = ExtResource("2_w8ny7")
+TypeKey = "PxStar_1"
+ProvidedPackedScene = ExtResource("6_4j2lk")
+MaxCount = 111
+IsOrdered = false
+MinSize = 0.2
+MaxSize = 0.3
+ParallaxSpeed = 0.0
+metadata/_custom_type_script = "uid://dsd74emadrro5"
+
+[sub_resource type="Resource" id="Resource_48ck1"]
+script = ExtResource("2_w8ny7")
+TypeKey = "PxShip_2"
+ProvidedPackedScene = ExtResource("7_bh54y")
+MaxCount = 111
+IsOrdered = true
+MinSize = 0.1
+MaxSize = 0.9
+ParallaxSpeed = 30.0
+metadata/_custom_type_script = "uid://dsd74emadrro5"
+
+[sub_resource type="Resource" id="Resource_w43qo"]
+script = ExtResource("2_w8ny7")
+TypeKey = "PxStation_1"
+ProvidedPackedScene = ExtResource("8_48ck1")
+MaxCount = 1
+IsOrdered = false
+MinSize = 1.0
+MaxSize = 1.0
+ParallaxSpeed = 0.001
+metadata/_custom_type_script = "uid://dsd74emadrro5"
+
 [node name="ParallaxBG" type="ParallaxBackground"]
 layer = -99
 script = ExtResource("1_4quh1")
-_itemConfigs = [SubResource("Resource_opv8y")]
+_itemConfigs = [SubResource("Resource_opv8y"), SubResource("Resource_llcxi"), SubResource("Resource_4j2lk"), SubResource("Resource_bh54y"), SubResource("Resource_48ck1"), SubResource("Resource_w43qo")]

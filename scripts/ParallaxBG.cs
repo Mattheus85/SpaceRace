@@ -14,44 +14,66 @@ public partial class ParallaxBG : ParallaxBackground
 
 		foreach (var config in _itemConfigs)
 		{
-			if (config.Prefab == null)
+			if (config.ProvidedPackedScene == null)
 			{
-				GD.Print($"Error: Prefab for {config.TypeKey} is null");
+				GD.Print($"Error: ProvidedPackedScene for {config.TypeKey} is null");
 				continue;
 			}
 			GD.Print($@"---->ParallaxBG _Ready called, Configs: {_itemConfigs.Length}
----->Spawning {config.TypeKey}s, Count: {config.MaxCount}, Prefab: {config.Prefab.ResourcePath}");
-
-			for (int i = 0; i < config.MaxCount; i++)
+---->Spawning {config.TypeKey}, Count: {config.MaxCount}, ProvidedPackedScene: {config.ProvidedPackedScene.ResourcePath}");
+			if (config.TypeKey == "PxStation_1")
 			{
-				var layer = config.Prefab.Instantiate<ParallaxLayer>();
 
-				// Simplest positioning: Random in a large fixed area around origin
-				float randomX = (float)GD.RandRange(0, 39000);
-				float randomY = (float)GD.RandRange(0, 22000);
-				layer.GlobalPosition = new Vector2(randomX, randomY);
-
-				// Existing configuration for size and motion scale
-				float sizeFactor = (float)(Math.Pow(GD.Randf(), 2) * (config.MaxSize - config.MinSize) + config.MinSize);
+				var layer = config.ProvidedPackedScene.Instantiate<ParallaxLayer>();
 				var textureRect = layer.GetChild<TextureRect>(0);
-				textureRect.Scale = new Vector2(sizeFactor, sizeFactor);
-				Vector2 motionScaleValue = new Vector2(sizeFactor * config.ParallaxSpeed, sizeFactor * config.ParallaxSpeed);
-				layer.MotionScale = motionScaleValue.X < 0.6f ? motionScaleValue * new Vector2(.025f,.025f) : motionScaleValue;
-
-				// Add to this ParallaxBackground node
+				Vector2 motionScaleValue = new Vector2
+					(
+						.00001f,
+						.00001f
+					);
+				layer.GlobalPosition = new Vector2(300, 200);
+				layer.MotionScale = motionScaleValue;
 				this.AddChild(layer);
+			}
+			else
+			{
 
-				// Simple approach for 'IsOrdered': set ZIndex based on size
-				// Larger (closer) objects will have a higher ZIndex.
-				if (config.IsOrdered)
+				for (int i = 0; i < config.MaxCount; i++)
 				{
-					layer.ZIndex = (int)(sizeFactor * 100); // Scale ZIndex to avoid too many overlaps for small size differences
+					var layer = config.ProvidedPackedScene.Instantiate<ParallaxLayer>();
+
+					// Existing configuration for size and motion scale
+					float sizeFactor = (float)(Math.Pow(GD.Randf(), 2) * (config.MaxSize - config.MinSize) + config.MinSize);
+					var textureRect = layer.GetChild<TextureRect>(0);
+					textureRect.Scale = new Vector2(sizeFactor, sizeFactor);
+					Vector2 motionScaleValue = new Vector2
+						(
+							sizeFactor * config.ParallaxSpeed,
+							sizeFactor * config.ParallaxSpeed
+						);
+
+					// Simplest positioning: Random in a large fixed area around origin
+					float randomX = (float)GD.RandRange(0, 3900);
+					float randomY = (float)GD.RandRange(0, 2200);
+					layer.GlobalPosition = new Vector2(randomX * (0 + sizeFactor), randomY * (10 + sizeFactor));
+
+					layer.MotionScale = motionScaleValue.X < 0.6f ? motionScaleValue * new Vector2(.025f, .025f) : motionScaleValue;
+
+					// Add to this ParallaxBackground node
+					this.AddChild(layer);
+
+					// Simple approach for 'IsOrdered': set ZIndex based on size
+					// Larger (closer) objects will have a higher ZIndex.
+					if (config.IsOrdered)
+					{
+						layer.ZIndex = (int)(sizeFactor * 100); // Scale ZIndex to avoid too many overlaps for small size differences
+					}
+					// 		GD.Print($@"        Position: {layer.GlobalPosition}
+					// Size: {sizeFactor}
+					// MotionScale: {layer.MotionScale}
+					// ZIndex: {layer.ZIndex}
+					// ");
 				}
-		// 		GD.Print($@"        Position: {layer.GlobalPosition}
-		// Size: {sizeFactor}
-		// MotionScale: {layer.MotionScale}
-		// ZIndex: {layer.ZIndex}
-		// ");
 			}
 		}
 	}

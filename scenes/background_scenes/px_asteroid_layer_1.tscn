@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://djwjqm6w6q84i"]
+
+[ext_resource type="Texture2D" uid="uid://bie1nh13id3gx" path="res://assets/items/rock.png" id="1_5jb0c"]
+
+[node name="PxAsteroidLayer_1" type="ParallaxLayer"]
+
+[node name="PxAsteroidTexture_1" type="TextureRect" parent="."]
+offset_right = 64.0
+offset_bottom = 64.0
+texture = ExtResource("1_5jb0c")
+expand_mode = 1
