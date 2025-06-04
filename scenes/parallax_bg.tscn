@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://ccdi1rndw4tmm"]
+
+[ext_resource type="Script" uid="uid://b5haj3ywjrf8y" path="res://scripts/ParallaxBG.cs" id="1_4quh1"]
+[ext_resource type="PackedScene" uid="uid://djwjqm6w6q84i" path="res://scenes/asteroid.tscn" id="2_kk7ld"]
+[ext_resource type="Script" uid="uid://dsd74emadrro5" path="res://scripts/BackgroundItemConfig.cs" id="2_w8ny7"]
+
+[sub_resource type="Resource" id="Resource_opv8y"]
+script = ExtResource("2_w8ny7")
+TypeKey = "Asteroids"
+Prefab = ExtResource("2_kk7ld")
+MaxCount = 25
+IsOrdered = false
+MinSize = 0.1
+MaxSize = 0.9
+ParallaxSpeed = 45
+metadata/_custom_type_script = "uid://dsd74emadrro5"
+
+[node name="ParallaxBG" type="CanvasLayer"]
+script = ExtResource("1_4quh1")
+_itemConfigs = [SubResource("Resource_opv8y")]

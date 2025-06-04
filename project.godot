@@ -15,6 +15,10 @@ run/main_scene="uid://h533bkhdofxd"
 config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+SpawnManager="*res://scenes/spawn_manager.tscn"
+
 [display]
 
 window/size/viewport_width=1920
@@ -44,3 +48,4 @@ ui_up={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+environment/defaults/default_clear_color=Color(0.227764, 0.321274, 0.315487, 1)

@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://cdoqliko0x5df"]
+
+[ext_resource type="Texture2D" uid="uid://d16ahxq3y4av6" path="res://assets/starmaps/starmap_2020_4k_gal.exr" id="1_yll44"]
+[ext_resource type="Texture2D" uid="uid://gvdg8vlaqfm5" path="res://assets/starmaps/constellation_figures_4k_gal.png" id="2_a600q"]
+
+[node name="SpaceBackground" type="CanvasLayer"]
+layer = -100
+
+[node name="Starfield" type="TextureRect" parent="."]
+offset_left = -250.0
+offset_top = -75.0
+offset_right = 3846.0
+offset_bottom = 1973.0
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("1_yll44")
+expand_mode = 1
+
+[node name="Constellations" type="TextureRect" parent="."]
+modulate = Color(1, 1, 1, 0.12549)
+offset_left = -250.0
+offset_top = -75.0
+offset_right = 3845.0
+offset_bottom = 1973.0
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2_a600q")
+expand_mode = 1

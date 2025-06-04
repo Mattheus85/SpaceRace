@@ -1,0 +1,43 @@
+[gd_scene load_steps=4 format=3 uid="uid://bgqke772wfrog"]
+
+[ext_resource type="Script" uid="uid://bsty68fjj5i20" path="res://scripts/Debug.cs" id="1_36slo"]
+
+[sub_resource type="SystemFont" id="SystemFont_w3gcs"]
+font_names = PackedStringArray("MesloLGMDZ Nerd Font Mono", "JetBrainsMono Nerd Font Mono")
+subpixel_positioning = 0
+
+[sub_resource type="Theme" id="Theme_7vnkb"]
+default_font = SubResource("SystemFont_w3gcs")
+default_font_size = 20
+
+[node name="Debug" type="CanvasLayer"]
+script = ExtResource("1_36slo")
+
+[node name="DebugPanel" type="Panel" parent="."]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DebugPanel"]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme = SubResource("Theme_7vnkb")
+
+[node name="PositionLabel" type="Label" parent="DebugPanel/VBoxContainer"]
+layout_mode = 2
+text = "Position: 11389, 18087"
+
+[node name="SpeedLabel" type="Label" parent="DebugPanel/VBoxContainer"]
+layout_mode = 2
+text = "Speed: 1280"
+
+[node name="RotationLabel" type="Label" parent="DebugPanel/VBoxContainer"]
+layout_mode = 2
+text = "Rotation: 189 "
+
+[node name="DirectionLabel" type="Label" parent="DebugPanel/VBoxContainer"]
+layout_mode = 2
+text = "Direction: ????"
+
+[node name="SpawnRadiusInput" type="LineEdit" parent="DebugPanel/VBoxContainer"]
+visible = false
+layout_mode = 2
