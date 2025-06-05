@@ -6,12 +6,9 @@ using System.Linq;
 public partial class ParallaxBG : ParallaxBackground
 {
 	[Export] private BackgroundItemConfig[] _itemConfigs = new BackgroundItemConfig[0];
-	private List<ParallaxLayer> _parallaxLayerList = new List<ParallaxLayer>();
 
 	public override void _Ready()
 	{
-		CharacterBody2D player = GetNode<CharacterBody2D>("/root/Main/Player");
-
 		foreach (var config in _itemConfigs)
 		{
 			if (config.ProvidedPackedScene == null)
@@ -19,8 +16,10 @@ public partial class ParallaxBG : ParallaxBackground
 				GD.Print($"Error: ProvidedPackedScene for {config.TypeKey} is null");
 				continue;
 			}
-			GD.Print($@"---->ParallaxBG _Ready called, Configs: {_itemConfigs.Length}
----->Spawning {config.TypeKey}, Count: {config.MaxCount}, ProvidedPackedScene: {config.ProvidedPackedScene.ResourcePath}");
+			GD.Print($@"
+					---->ParallaxBG.cs entered
+					---->Spawning {config.MaxCount} {config.TypeKey}s
+					");
 			if (config.TypeKey == "PxStation_1")
 			{
 
@@ -78,8 +77,5 @@ public partial class ParallaxBG : ParallaxBackground
 		}
 	}
 
-	public override void _Process(double delta)
-	{
-		_parallaxLayerList = GetChildren().OfType<ParallaxLayer>().ToList();
-	}
+	public override void _Process(double delta) { }
 }

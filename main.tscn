@@ -1,11 +1,25 @@
-[gd_scene load_steps=7 format=3 uid="uid://h533bkhdofxd"]
+[gd_scene load_steps=11 format=3 uid="uid://h533bkhdofxd"]
 
 [ext_resource type="Script" uid="uid://3626cfh4ua3h" path="res://Main.cs" id="1_lquwl"]
 [ext_resource type="PackedScene" uid="uid://u3fi7dwl3dgy" path="res://scenes/player.tscn" id="2_h2yge"]
 [ext_resource type="PackedScene" uid="uid://cdoqliko0x5df" path="res://scenes/space_background.tscn" id="3_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://ccdi1rndw4tmm" path="res://scenes/parallax_bg.tscn" id="5_7mycd"]
 [ext_resource type="PackedScene" uid="uid://rp5qea4o6n02" path="res://scenes/boundary.tscn" id="5_lquwl"]
-[ext_resource type="PackedScene" uid="uid://bgqke772wfrog" path="res://scenes/debug_hud.tscn" id="6_7mycd"]
+[ext_resource type="PackedScene" uid="uid://djp42qlxs2vmk" path="res://scenes/player_stats.tscn" id="6_7mycd"]
+[ext_resource type="PackedScene" uid="uid://djwjqm6w6q84i" path="res://scenes/background_scenes/px_asteroid_layer_1.tscn" id="6_kek77"]
+[ext_resource type="Script" uid="uid://dsd74emadrro5" path="res://scripts/BackgroundItemConfig.cs" id="7_4c57u"]
+[ext_resource type="PackedScene" uid="uid://c0vaji0oi2xej" path="res://scenes/debug.tscn" id="7_272bh"]
+
+[sub_resource type="Resource" id="Resource_efxa6"]
+script = ExtResource("7_4c57u")
+TypeKey = "PxAsteroid_1"
+ProvidedPackedScene = ExtResource("6_kek77")
+MaxCount = 1000
+IsOrdered = true
+MinSize = 0.1
+MaxSize = 1.0
+ParallaxSpeed = 1.0
+metadata/_custom_type_script = "uid://dsd74emadrro5"
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_lquwl")
@@ -25,5 +39,8 @@ metadata/_edit_group_ = true
 [node name="ParallaxBG" parent="Player/Camera2D" instance=ExtResource("5_7mycd")]
 follow_viewport_enabled = true
 scroll_ignore_camera_zoom = true
+_itemConfigs = [SubResource("Resource_efxa6")]
 
-[node name="Debug" parent="." instance=ExtResource("6_7mycd")]
+[node name="PlayerStats" parent="." instance=ExtResource("6_7mycd")]
+
+[node name="Debug" parent="." instance=ExtResource("7_272bh")]

@@ -1,6 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://bgqke772wfrog"]
+[gd_scene load_steps=4 format=3 uid="uid://djp42qlxs2vmk"]
 
-[ext_resource type="Script" uid="uid://bsty68fjj5i20" path="res://scripts/Debug.cs" id="1_36slo"]
+[ext_resource type="Script" uid="uid://bsty68fjj5i20" path="res://scripts/PlayerStats.cs" id="1_0n8io"]
 
 [sub_resource type="SystemFont" id="SystemFont_w3gcs"]
 font_names = PackedStringArray("MesloLGMDZ Nerd Font Mono", "JetBrainsMono Nerd Font Mono")
@@ -10,8 +10,8 @@ subpixel_positioning = 0
 default_font = SubResource("SystemFont_w3gcs")
 default_font_size = 20
 
-[node name="Debug" type="CanvasLayer"]
-script = ExtResource("1_36slo")
+[node name="PlayerStats" type="CanvasLayer"]
+script = ExtResource("1_0n8io")
 
 [node name="DebugPanel" type="Panel" parent="."]
 offset_left = 16.0
@@ -40,11 +40,11 @@ text = "Rotation: 189 "
 
 [node name="DirectionTravelingLabel" type="Label" parent="DebugPanel/VBoxContainer"]
 layout_mode = 2
-text = "Direction Traveling: ??"
+text = "Direction Traveling: ^"
 
 [node name="DirectionFacingLabel" type="Label" parent="DebugPanel/VBoxContainer"]
 layout_mode = 2
-text = "Direction Facing: ????"
+text = "Direction Facing: NE"
 
 [node name="SpawnRadiusInput" type="LineEdit" parent="DebugPanel/VBoxContainer"]
 visible = false
