@@ -5,7 +5,8 @@ using System.Linq;
 
 public partial class ParallaxBG : ParallaxBackground
 {
-	[Export] private BackgroundItemConfig[] _itemConfigs = new BackgroundItemConfig[0];
+    [Export] private BackgroundItemConfig[] _itemConfigs = new BackgroundItemConfig[0];
+
 
 	public override void _Ready()
 	{
@@ -21,6 +22,7 @@ public partial class ParallaxBG : ParallaxBackground
 				continue;
 			}
 			GD.Print($@"
+
 					---->ParallaxBG.cs entered
 					---->Spawning {config.Count} {config.SpaceJunkName}s
 					");
@@ -87,4 +89,5 @@ public partial class ParallaxBG : ParallaxBackground
 		//         }
 		//     }
 	}
+
 }
