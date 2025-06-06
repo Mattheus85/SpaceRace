@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://djwjqm6w6q84i"]
+[gd_scene load_steps=3 format=3 uid="uid://djwjqm6w6q84i"]
 
 [ext_resource type="Texture2D" uid="uid://bie1nh13id3gx" path="res://assets/items/rock.png" id="1_5jb0c"]
+[ext_resource type="Script" uid="uid://cjktr1wdb7fbs" path="res://scripts/PxAsteroidTexture1.cs" id="2_8u4l8"]
 
 [node name="PxAsteroidLayer_1" type="ParallaxLayer"]
 
@@ -10,3 +11,4 @@ offset_bottom = 64.0
 pivot_offset = Vector2(32, 32)
 texture = ExtResource("1_5jb0c")
 expand_mode = 1
+script = ExtResource("2_8u4l8")
