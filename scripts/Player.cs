@@ -4,6 +4,8 @@ using System;
 public partial class Player : CharacterBody2D
 {
 	[Export]
+	public float rotationSteps { get; set; } = 64;
+	[Export]
 	public float acceleration { get; set; } = 150.0f;
 	[Export]
 	public float rotationAcceleration { get; set; } = 2.5f;
@@ -37,6 +39,7 @@ public partial class Player : CharacterBody2D
 
 	// Player movement
 	private Vector2 movementDirection;
+	private float godotRotation;
 
 	// Nodes
 	private Camera2D _camera;
@@ -62,10 +65,15 @@ public partial class Player : CharacterBody2D
 
 	public override void _Process(double delta)
 	{
-		_inputVector.X = Input.GetAxis("ui_left", "ui_right");
-		_inputVector.Y = Input.IsActionPressed("ui_up") ? 1 : 0;
+		float turnInput = Input.GetActionStrength("turn_right") - Input.GetActionStrength("turn_left");
+		godotRotation += turnInput * rotationAcceleration * (float)delta;
+		_inputVector.Y = Input.IsActionPressed("thrust") ? 1 : 0;
 
-		_initialRotation = _inputVector.X != 0 ? (int)_inputVector.X : 0;
+
+		float step = Mathf.Tau / rotationSteps;
+		float snappedRotation = Mathf.Round(godotRotation / step) * step;
+		Rotation = snappedRotation;
+
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -97,7 +105,8 @@ public partial class Player : CharacterBody2D
 		{
 			var c = GetSlideCollision(i);
 			var collider = c.GetCollider();
-			if (collider is RigidBody2D) {
+			if (collider is RigidBody2D)
+			{
 				HandleRigidBody2DCollision(collider as RigidBody2D, c);
 			}
 		}

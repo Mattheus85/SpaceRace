@@ -50,7 +50,9 @@ script = ExtResource("1_lquwl")
 
 [node name="Player" parent="." instance=ExtResource("2_h2yge")]
 position = Vector2(965, 541)
-acceleration = 5.0
+rotationSteps = 32.0
+acceleration = 1.0
+rotationAcceleration = 8.0
 maxSpeed = 1000.0
 metadata/_edit_group_ = true
 
