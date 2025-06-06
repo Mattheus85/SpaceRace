@@ -5,77 +5,86 @@ using System.Linq;
 
 public partial class ParallaxBG : ParallaxBackground
 {
-	[Export] private BackgroundItemConfig[] _itemConfigs = new BackgroundItemConfig[0];
+    [Export] private BackgroundItemConfig[] _itemConfigs = new BackgroundItemConfig[0];
 
-	public override void _Ready()
-	{
-		foreach (var config in _itemConfigs)
-		{
-			if (config.ProvidedPackedScene == null)
-			{
-				GD.Print($"Error: ProvidedPackedScene for {config.TypeKey} is null");
-				continue;
-			}
-			GD.Print($@"
+    public override void _Ready()
+    {
+        PackedScene px_asteroid_layer_1 = ResourceLoader.Load<PackedScene>("res://scenes/background_scenes/px_asteroid_layer_1.tscn");
+        BackgroundItemConfig pxAsteroidLayer1BIC = CreateSpaceJunk("example junk", px_asteroid_layer_1, 1500, 1, 5, 0.1f, 1.0f, 20);
+        _itemConfigs[0] = pxAsteroidLayer1BIC;
+
+        foreach (var config in _itemConfigs)
+        {
+            if (config.ProvidedPackedScene == null)
+            {
+                GD.Print($"Error: ProvidedPackedScene for {config.SpaceJunkName} is null");
+                continue;
+            }
+            GD.Print($@"
 					---->ParallaxBG.cs entered
-					---->Spawning {config.MaxCount} {config.TypeKey}s
+					---->Spawning {config.Count} {config.SpaceJunkName}s
 					");
-			if (config.TypeKey == "PxStation_1")
-			{
 
-				var layer = config.ProvidedPackedScene.Instantiate<ParallaxLayer>();
-				var textureRect = layer.GetChild<TextureRect>(0);
-				Vector2 motionScaleValue = new Vector2
-					(
-						.00001f,
-						.00001f
-					);
-				layer.GlobalPosition = new Vector2(300, 200);
-				layer.MotionScale = motionScaleValue;
-				this.AddChild(layer);
-			}
-			else
-			{
+            for (int i = 0; i < config.Count; i++)
+            {
+                var layer = config.ProvidedPackedScene.Instantiate<ParallaxLayer>();
 
-				for (int i = 0; i < config.MaxCount; i++)
-				{
-					var layer = config.ProvidedPackedScene.Instantiate<ParallaxLayer>();
 
-					// Existing configuration for size and motion scale
-					float sizeFactor = (float)(Math.Pow(GD.Randf(), 2) * (config.MaxSize - config.MinSize) + config.MinSize);
-					var textureRect = layer.GetChild<TextureRect>(0);
-					textureRect.Scale = new Vector2(sizeFactor, sizeFactor);
-					Vector2 motionScaleValue = new Vector2
-						(
-							sizeFactor * config.ParallaxSpeed,
-							sizeFactor * config.ParallaxSpeed
-						);
 
-					// Simplest positioning: Random in a large fixed area around origin
-					float randomX = (float)GD.RandRange(0, 3900);
-					float randomY = (float)GD.RandRange(0, 2200);
-					layer.GlobalPosition = new Vector2(randomX * (0 + sizeFactor), randomY * (10 + sizeFactor));
+                float randomScale = (float)GD.RandRange(config.MinRelativeSize, config.MaxRelativeSize);
+                float distance = (float)GD.RandRange(.5f, 1.0f);
 
-					layer.MotionScale = motionScaleValue.X < 0.6f ? motionScaleValue * new Vector2(.025f, .025f) : motionScaleValue;
+                float sizeFactor = 1f / distance * randomScale;
+                var textureRect = layer.GetChild<TextureRect>(0);
+                textureRect.Scale = new Vector2(sizeFactor, sizeFactor);
 
-					// Add to this ParallaxBackground node
-					this.AddChild(layer);
+                // Parallax factor = 1 / D where D is distance to object. Here we have a variable parallax speed in order to fine tune how fast everything across the background. 
+                float parallax_factor = config.ParallaxSpeed / distance;
+                Vector2 motionScaleValue = new Vector2(parallax_factor, parallax_factor);
 
-					// Simple approach for 'IsOrdered': set ZIndex based on size
-					// Larger (closer) objects will have a higher ZIndex.
-					if (config.IsOrdered)
-					{
-						layer.ZIndex = (int)(sizeFactor * 100); // Scale ZIndex to avoid too many overlaps for small size differences
-					}
-					// 		GD.Print($@"        Position: {layer.GlobalPosition}
-					// Size: {sizeFactor}
-					// MotionScale: {layer.MotionScale}
-					// ZIndex: {layer.ZIndex}
-					// ");
-				}
-			}
-		}
-	}
+                // Simplest positioning: Random in a large fixed area around origin
+                float randomX = (float)GD.RandRange(0, 3900);
+                float randomY = (float)GD.RandRange(0, 2200);
+                layer.GlobalPosition = new Vector2(randomX * (0 + sizeFactor), randomY * (10 + sizeFactor));
 
-	public override void _Process(double delta) { }
+                layer.MotionScale = motionScaleValue;
+                // Add to this ParallaxBackground node
+                this.AddChild(layer);
+
+                layer.ZIndex = (int)(distance * -99); // Scale ZIndex to avoid too many overlaps for small size differences
+            }
+        }
+    }
+    private BackgroundItemConfig CreateSpaceJunk(String spaceJunkName, PackedScene providedPackedScene, int count, float distance, float size, float minRelativeSize, float maxRelativeSize, float parallaxSpeed)
+    {
+        return new BackgroundItemConfig
+        {
+            SpaceJunkName = spaceJunkName,
+            ProvidedPackedScene = providedPackedScene,
+            Count = count,
+            Distance = distance,
+            MinRelativeSize = minRelativeSize,
+            MaxRelativeSize = maxRelativeSize,
+            ParallaxSpeed = parallaxSpeed,
+        };
+    }
+
+    public override void _Process(double delta)
+    {
+    //     foreach (var config in _itemConfigs)
+    //     {
+    //         if (config.ProvidedPackedScene == null)
+    //         {
+    //             GD.Print($"Error: ProvidedPackedScene for {config.SpaceJunkName} is null");
+    //             continue;
+    //         }
+    //         for (int i = 0; i < config.Count; i++)
+    //         {
+    //             var layer = config.ProvidedPackedScene.Instantiate<ParallaxLayer>();
+    //             var textureRect = layer.GetChild<TextureRect>(0);
+    //             float scale = textureRect.Scale.X;
+    //             textureRect.Rotation += scale * (float)delta * GD.Randf();
+    //         }
+    //     }
+    }
 }

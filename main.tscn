@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://h533bkhdofxd"]
+[gd_scene load_steps=13 format=3 uid="uid://h533bkhdofxd"]
 
 [ext_resource type="Script" uid="uid://3626cfh4ua3h" path="res://Main.cs" id="1_lquwl"]
 [ext_resource type="PackedScene" uid="uid://u3fi7dwl3dgy" path="res://scenes/player.tscn" id="2_h2yge"]
@@ -12,12 +12,32 @@
 
 [sub_resource type="Resource" id="Resource_efxa6"]
 script = ExtResource("7_4c57u")
-TypeKey = "PxAsteroid_1"
+SpaceJunkName = ""
 ProvidedPackedScene = ExtResource("6_kek77")
-MaxCount = 1000
-IsOrdered = true
-MinSize = 0.1
-MaxSize = 1.0
+Count = 0
+Distance = 0.0
+MinRelativeSize = 0.1
+MaxRelativeSize = 1.0
+ParallaxSpeed = 400.0
+metadata/_custom_type_script = "uid://dsd74emadrro5"
+
+[sub_resource type="Resource" id="Resource_kek77"]
+script = ExtResource("7_4c57u")
+SpaceJunkName = ""
+Count = 0
+Distance = 0.0
+MinRelativeSize = 0.1
+MaxRelativeSize = 1.0
+ParallaxSpeed = 1.0
+metadata/_custom_type_script = "uid://dsd74emadrro5"
+
+[sub_resource type="Resource" id="Resource_4c57u"]
+script = ExtResource("7_4c57u")
+SpaceJunkName = ""
+Count = 0
+Distance = 0.0
+MinRelativeSize = 0.1
+MaxRelativeSize = 1.0
 ParallaxSpeed = 1.0
 metadata/_custom_type_script = "uid://dsd74emadrro5"
 
@@ -30,8 +50,8 @@ script = ExtResource("1_lquwl")
 
 [node name="Player" parent="." instance=ExtResource("2_h2yge")]
 position = Vector2(965, 541)
-acceleration = 15.0
-maxSpeed = 10.0
+acceleration = 5.0
+maxSpeed = 1000.0
 metadata/_edit_group_ = true
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
@@ -39,7 +59,7 @@ metadata/_edit_group_ = true
 [node name="ParallaxBG" parent="Player/Camera2D" instance=ExtResource("5_7mycd")]
 follow_viewport_enabled = true
 scroll_ignore_camera_zoom = true
-_itemConfigs = [SubResource("Resource_efxa6")]
+_itemConfigs = [SubResource("Resource_efxa6"), SubResource("Resource_kek77"), SubResource("Resource_4c57u")]
 
 [node name="PlayerStats" parent="." instance=ExtResource("6_7mycd")]
 
