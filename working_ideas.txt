@@ -1,0 +1,27 @@
+There needs to be a clear way for the player to tell the difference between background and foreground objects. 
+
+
+Things that would be impactful:
+- More different asteroid sprites
+- Active Rotation (scaled with size and random speed)
+- Variable static rotational position (if not rotating)
+- Space Dust (bad idea(maybe worth trying anyway?)) 
+
+
+
+A "Background visual" would help a lot. This could be a planet or a very large ship. What it needs to be: 
+- interesting
+- static (no parallax movement)
+- maybe just starfield? 
+
+
+A "Large Parallax Object" would help
+- Mining Colony
+- Orbital Structure, like a space station or somthin
+- Planet colony (think domes on mars or even a continent (could be earth, could be some other planet) wiih lights in the shape of cities like we see on Earth)
+
+Needs to be measured in kilometers, so as to still move in parallax, but very slowly. 
+
+
+
+
