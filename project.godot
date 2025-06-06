@@ -23,10 +23,15 @@ SpawnManager="*res://scenes/spawn_manager.tscn"
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+window/size/always_on_top=true
 
 [dotnet]
 
 project/assembly_name="space"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot-vim/plugin.cfg")
 
 [input]
 
